@@ -1,0 +1,56 @@
+--Query1
+
+SELECT g.name genre,
+       BillingCountry,
+       Count(t.TrackId) AS Total
+FROM Track AS t
+JOIN Genre AS g ON t.GenreId = g.GenreId
+JOIN InvoiceLine AS il ON t.TrackId = il.TrackId
+JOIN Invoice AS i ON il.InvoiceId = i.InvoiceId
+WHERE i.BillingCountry ="United Kingdom"
+GROUP BY genre
+ORDER BY total DESC
+LIMIT 6;
+
+--Query2
+
+SELECT c.firstname || ' ' || c.lastname AS fullname,
+       c.customerid,
+       Sum(i.total) AS Total_purchase
+FROM invoice AS i
+JOIN customer AS c ON c.customerid = i.customerid GROUP  BY c.customerid
+ORDER  BY total_purchase DESC
+LIMIT 10 ;
+
+-- Query3
+
+SELECT Artist.Name,
+       COUNT(Album.Title) AS Total_Album
+FROM Artist
+JOIN Album ON Artist.ArtistId = Album.ArtistId
+GROUP BY Artist.Name
+ORDER BY Total_Album DESC
+LIMIT 10;
+
+--Query4
+
+SELECT Artist.Name,
+       COUNT(Track.Name) AS N_Tracks
+FROM Artist
+JOIN Album ON Album.ArtistId = Artist.ArtistId
+JOIN Track ON Album.AlbumId = Track.AlbumId
+JOIN Genre ON Track.GenreId = Genre.GenreId
+GROUP BY Artist.Name,
+         Genre.Name
+ORDER BY N_Tracks DESC
+LIMIT 9;
+
+--Query5 Which Employee has the most sales?
+
+SELECT e.firstname|| ' ' ||e.lastname fullname,
+       (sum(i.Total))AS Total_sales
+FROM Customer AS c
+JOIN Employee AS e ON e.EmployeeId = c.SupportRepId
+JOIN Invoice AS i ON i.CustomerId = c.CustomerId
+GROUP BY fullname
+ORDER BY total_sales;
